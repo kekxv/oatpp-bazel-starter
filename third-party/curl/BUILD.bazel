@@ -17,10 +17,13 @@ _CACHE_ENTRIES = dict({
 })
 
 cmake(
-    name = "curl",
+    name = "curl-build",
     build_args = ["-j2"],
     cache_entries = select({
         "@platforms//os:osx": dict(_CACHE_ENTRIES.items() + {
+            "USE_NGHTTP2": "OFF",
+            "USE_LIBIDN2": "OFF",
+            "USE_APPLE_IDN": "OFF",
             "CMAKE_SYSTEM_NAME": "Darwin",
             "CMAKE_C_FLAGS": "$${CMAKE_C_FLAGS:-} -DHAVE_STRUCT_TIMEVAL",
             "CMAKE_CXX_FLAGS": "$${CMAKE_CXX_FLAGS:-} -DHAVE_STRUCT_TIMEVAL",
@@ -30,6 +33,10 @@ cmake(
     generate_crosstool_file = False,
     lib_source = "@curl//:all",
     linkopts = select({
+        "@platforms//os:osx": [
+            "-llber",
+            "-lldap",
+        ],
         "//conditions:default": [
             "-std=c++11",
             "-ldl",
@@ -44,11 +51,29 @@ cmake(
             "libcurl.a",
         ],
     }),
-    visibility = ["//visibility:public"],
     deps = select({
         "//conditions:default": [
-            "//third-party/openssl",
             "//third-party/zlib",
+            "@boringssl//:crypto",
+            "@boringssl//:ssl",
         ],
     }),
+)
+
+cc_library(
+    name = "curl",
+    linkopts = select({
+        "@platforms//os:osx": [
+            "-framework SystemConfiguration",
+        ],
+        "//conditions:default": [],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [":curl-build"],
+)
+
+cc_binary(
+    name = "curl_test",
+    srcs = ["test.cpp"],
+    deps = [":curl"],
 )

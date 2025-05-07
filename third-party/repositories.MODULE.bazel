@@ -1,5 +1,3 @@
-include("//third-party/openssl:repositories.MODULE.bazel")
-
 include("//third-party/zlib:repositories.MODULE.bazel")
 
 include("//third-party/curl:repositories.MODULE.bazel")

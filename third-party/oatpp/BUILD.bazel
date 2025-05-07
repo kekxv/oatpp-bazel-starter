@@ -85,7 +85,9 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":oatpp",
-        "//third-party/openssl",
+        # "//third-party/openssl",
+        "@boringssl//:crypto",
+        "@boringssl//:ssl",
         "@oatpp_openssl//:oatpp_openssl_header",
     ],
 )

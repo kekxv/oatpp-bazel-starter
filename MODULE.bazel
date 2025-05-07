@@ -12,6 +12,7 @@ single_version_override(
     version = "0.14.0",
 )
 
+bazel_dep(name = "boringssl", version = "0.20240913.0")
 bazel_dep(name = "fmt", version = "11.0.2")
 bazel_dep(name = "googletest", version = "1.15.2")
 
