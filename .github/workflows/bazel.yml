@@ -2,15 +2,15 @@ name: Bazel Build
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main","develop" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main","develop" ]
 
 jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
     name: Build (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     steps:
