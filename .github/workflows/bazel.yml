@@ -29,6 +29,7 @@ jobs:
           bazelrc: |
             build --color=yes
             build --show_timestamps
+            build --cxxopt='-std=c++17
 
       - name: Configure Git to handle line endings
         run: |
