@@ -17,19 +17,29 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install Bazel
+      - name: Install Bazel (Non-Windows)
+        if: matrix.os != 'windows-latest'
         uses: bazel-contrib/setup-bazel@0.14.0
         with:
-          # Avoid downloading Bazel every time.
           bazelisk-cache: true
-          # Store build cache per workflow.
           disk-cache: ${{ github.workflow }}
-          # Share repository cache between workflows.
           repository-cache: true
           bazelrc: |
             build --color=yes
             build --show_timestamps
-            build --cxxopt='-std=c++17
+            build --cxxopt='-std=c++17'
+
+      - name: Install Bazel (Windows)
+        if: matrix.os == 'windows-latest'
+        uses: bazel-contrib/setup-bazel@0.14.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          repository-cache: true
+          bazelrc: |
+            build --color=yes
+            build --show_timestamps
+            build --cxxopt='/std:c++17'
 
       - name: Configure Git to handle line endings
         run: |
