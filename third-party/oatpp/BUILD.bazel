@@ -86,7 +86,7 @@ cc_library(
     deps = [
         ":oatpp",
         # "//third-party/openssl",
-        "@boringssl//:crypto",
+        #"@boringssl//:crypto",
         "@boringssl//:ssl",
         "@oatpp_openssl//:oatpp_openssl_header",
     ],
